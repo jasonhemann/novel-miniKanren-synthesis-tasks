@@ -78,50 +78,47 @@
    (sym _0 _1))))
 
 (test-equal? "Boostrapping quines from ``damaged'' source"
-  (run 3 (q) 
-    (fresh (p r s)
-      (== q `(,s ,r))
+  (run 3 (s r) 
+    (fresh (p)
       (absento p s)
       (evalo `(,p ,r) `(,p ,r))
       (evalo `(,s ,r) `(,p ,r))))
-'((((λ (_0) (list _0 (list 'quote _0)))
-    '(λ (_1) (list _1 (list 'quote _1))))
-   (=/=
-    ((_0 closure))
-    ((_0 list))
-    ((_0 quote))
-    ((_1 closure))
-    ((_1 list))
-    ((_1 quote)))
-   (sym _0 _1))
-  ((((λ (_0) (λ (_1) (list _1 (list 'quote _1)))) '_2)
-     '(λ (_3) (list _3 (list 'quote _3))))
-    (=/=
-     ((_0 λ))
-     ((_0 list))
-     ((_0 quote))
-     ((_1 closure))
-     ((_1 list))
-     ((_1 quote))
-     ((_2 (λ (_3) (list _3 (list 'quote _3)))))
-     ((_3 closure))
-     ((_3 list))
-     ((_3 quote)))
-    (sym _0 _1 _3)
-    (absento ('(λ (_3) (list _3 (list 'quote _3))) _2) (closure _2)))
-  (((λ (_0)
-      (list
-       (list 'λ '(_1) '(list _1 (list 'quote _1)))
-       (list 'quote _0)))
-    '(λ (_1) (list _1 (list 'quote _1))))
-   (=/=
-    ((_0 closure))
-    ((_0 list))
-    ((_0 quote))
-    ((_1 closure))
-    ((_1 list))
-    ((_1 quote)))
-   (sym _0 _1))))
+  '((((λ (_0) (list _0 (list 'quote _0))) '(λ (_1) (list _1 (list 'quote _1))))
+     (=/=
+      ((_0 _1))
+      ((_0 closure))
+      ((_0 list))
+      ((_0 quote))
+      ((_1 closure))
+      ((_1 list))
+      ((_1 quote)))
+     (sym _0 _1))
+    ((((λ (_0) (λ (_1) (list _1 (list 'quote _1)))) '_2)
+      '(λ (_3) (list _3 (list 'quote _3))))
+     (=/=
+      ((_0 list))
+      ((_0 quote))
+      ((_0 λ))
+      ((_1 _3))
+      ((_1 closure))
+      ((_1 list))
+      ((_1 quote))
+      ((_3 closure))
+      ((_3 list))
+      ((_3 quote)))
+     (sym _0 _1 _3)
+     (absento ((λ (_3) (list _3 (list 'quote _3))) _2) (closure _2)))
+    (((λ (_0)
+        (list (list 'λ '(_1) '(list _1 (list 'quote _1))) (list 'quote _0)))
+      '(λ (_1) (list _1 (list 'quote _1))))
+     (=/=
+      ((_0 closure))
+      ((_0 list))
+      ((_0 quote))
+      ((_1 closure))
+      ((_1 list))
+      ((_1 quote)))
+     (sym _0 _1))))
 
 (test-equal? "Trivial and non-trivial ``stuttered'' quasi-quine"
   (run 2 (q) (evalo `(,q ,q) q))
@@ -131,17 +128,17 @@
    (=/=
     ((_0 _1))
     ((_0 closure))
-    ((_0 λ))
     ((_0 list))
     ((_0 quote))
+    ((_0 λ))
     ((_1 closure))
     ((_1 list))
     ((_1 quote)))
    (sym _0 _1))))
 
 (test-equal? "3-cycle of distinct ``stuttered'' quasi-quines"
-  (run 1 (t)
-    (fresh (a b c) 
+  (run 1 (a b c) 
+    (fresh (t)
       (== t `((,a ,b) (,b ,c) (,c ,a)))
       (=/= a b) (=/= b c) (=/= c a)
       (evalo `(,a ,b) c)
@@ -174,63 +171,57 @@
    (sym _0 _1 _2)
    (absento (closure _3)))))
 
-(test-case "Irresistable"
-  (define relation
-    '(define-relation
-       (plop acc whole res data)
-       (conde
-         ((fresh
-              (s)
-            (== data `(,s))
-        (== acc `(,s))
-        (conde
-         ((fresh
-           (a d)
-           (== s `(,a unquote d))
-           (=/= d '())
-           (fresh (m) (== res `(,m)) (plop s whole m s))))
-         ((== 'q s) (== res `(q ',whole))))))
-      ((fresh
-        (a d)
-        (=/= d '())
-        (== `(,a unquote d) data)
-        (fresh
-         (p)
-         (== res `(,a unquote p))
-         (fresh (q) (== acc `(,a unquote q)) (plop q whole p d))))))))
-  (define query
-    '(run*
-      (q)
+   (define-relation
+     (plop acc whole res data)
+     (conde
+       ((fresh
+            (s)
+          (== data `(,s))
+      (== acc `(,s))
+      (conde
+       ((fresh
+         (a d)
+         (== s `(,a unquote d))
+         (=/= d '())
+         (fresh (m) (== res `(,m)) (plop s whole m s))))
+       ((== 'q s) (== res `(q ',whole))))))
+    ((fresh
+      (a d)
+      (=/= d '())
+      (== `(,a unquote d) data)
       (fresh
-       (x)
-       (plop
-        x
-        x
-        q
-        '((define-relation
-           (plop acc whole res data)
-           (conde
-            ((fresh
-              (s)
-              (== data `(,s))
-              (== acc `(,s))
-              (conde
-               ((fresh
-                 (a d)
-                 (== s `(,a unquote d))
-                 (=/= d '())
-                 (fresh (m) (== res `(,m)) (plop s whole m s))))
-               ((== 'q s) (== res `(q ',whole))))))
-            ((fresh
-              (a d)
-              (=/= d '())
-              (== `(,a unquote d) data)
-              (fresh
-               (p)
-               (== res `(,a unquote p))
-               (fresh (q) (== acc `(,a unquote q)) (plop q whole p d)))))))
-          (run* (q) (fresh (x) (plop x x q))))))))
-  (check-equal?
-   (equal? (map eval (list relation query))
-           (map eval (car (map eval (list relation query)))))))
+       (p)
+       (== res `(,a unquote p))
+       (fresh (q) (== acc `(,a unquote q)) (plop q whole p d)))))))
+   (run*
+    (q)
+    (fresh
+     (x)
+     (plop
+      x
+      x
+      q
+      '((define-relation
+         (plop acc whole res data)
+         (conde
+          ((fresh
+            (s)
+            (== data `(,s))
+            (== acc `(,s))
+            (conde
+             ((fresh
+               (a d)
+               (== s `(,a unquote d))
+               (=/= d '())
+               (fresh (m) (== res `(,m)) (plop s whole m s))))
+             ((== 'q s) (== res `(q ',whole))))))
+          ((fresh
+            (a d)
+            (=/= d '())
+            (== `(,a unquote d) data)
+            (fresh
+             (p)
+             (== res `(,a unquote p))
+             (fresh (q) (== acc `(,a unquote q)) (plop q whole p d)))))))
+        (run* (q) (fresh (x) (plop x x q)))))))
 

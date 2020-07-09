@@ -1,16 +1,16 @@
 #lang racket
-(provide (all-defined-out))
+;; (provide (all-defined-out))
 
-;; (provide run run*
-;;          == =/=
-;;          fresh eigen
-;;          conde conda condu
-;;          symbolo numbero ;; not-pairo
-;;          absento
-;;          project
-;;          prt
-;;          prt/s
-;;          define-relation)
+(provide run run*
+         == =/=
+         fresh
+         conde conda condu
+         symbolo numbero ;; not-pairo
+         absento
+         project
+         prt
+         prt/s
+         define-relation)
 
 ;; 4/2/15. Racketized.
 
@@ -32,6 +32,8 @@
 ;;; abandons E, if it succeeds.  If there is no failure by then, there were no eigen
 ;;; violations.
 
+
+;;; Unfortunately the delays are not in the right place; this is merely to match the syntax.
 (define-syntax-rule (define-relation (defname . args) g)
   (define (defname . args) g))
 
