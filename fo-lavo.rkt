@@ -24,9 +24,9 @@
        (val-ofo rand vars env a)
        (val-ofo body `(,x . ,vars^) `(,a . ,env^) val)))
     ((fresh (x body)
-       (== `(lambda (,x) ,body) exp)
+       (== `(λ (,x) ,body) exp)
        (symbolo x)
-       (absento 'lambda vars)
+       (absento 'λ vars)
        (== `(closure ,x ,body ,vars ,env) val)))))
 
 (define-relation (proper-listo exp vars env val)

@@ -3,9 +3,9 @@
 
 (test-equal? "Query for a Quine"
  (run 1 (q) (evalo q q))
-'((((lambda (_0) (list _0 (list 'quote _0)))
-   '(lambda (_0) (list _0 (list 'quote _0))))
-  (=/= ((_0 clos)) ((_0 list)) ((_0 quote)))
+'((((λ (_0) (list _0 (list 'quote _0)))
+   '(λ (_0) (list _0 (list 'quote _0))))
+  (=/= ((_0 closure)) ((_0 list)) ((_0 quote)))
   (sym _0))))
 
 (define-relation (all-diffo l)
@@ -28,23 +28,23 @@
  (run 1 (v t u q p) 
    (all-diffo '(v t u q p))
    (evalo q p) (evalo p q) (evalo u q) (evalo t u) (evalo v t))
-'(((''''((lambda (_0) (list 'quote (list _0 (list 'quote _0))))
-        '(lambda (_0) (list 'quote (list _0 (list 'quote _0)))))
-   '''((lambda (_0) (list 'quote (list _0 (list 'quote _0))))
-       '(lambda (_0) (list 'quote (list _0 (list 'quote _0)))))
-   ''((lambda (_0) (list 'quote (list _0 (list 'quote _0))))
-      '(lambda (_0) (list 'quote (list _0 (list 'quote _0)))))
-   '((lambda (_0) (list 'quote (list _0 (list 'quote _0))))
-     '(lambda (_0) (list 'quote (list _0 (list 'quote _0)))))
-   ((lambda (_0) (list 'quote (list _0 (list 'quote _0))))
-    '(lambda (_0) (list 'quote (list _0 (list 'quote _0))))))
-  (=/= ((_0 clos)) ((_0 list)) ((_0 quote)))
+'(((''''((λ (_0) (list 'quote (list _0 (list 'quote _0))))
+        '(λ (_0) (list 'quote (list _0 (list 'quote _0)))))
+   '''((λ (_0) (list 'quote (list _0 (list 'quote _0))))
+       '(λ (_0) (list 'quote (list _0 (list 'quote _0)))))
+   ''((λ (_0) (list 'quote (list _0 (list 'quote _0))))
+      '(λ (_0) (list 'quote (list _0 (list 'quote _0)))))
+   '((λ (_0) (list 'quote (list _0 (list 'quote _0))))
+     '(λ (_0) (list 'quote (list _0 (list 'quote _0)))))
+   ((λ (_0) (list 'quote (list _0 (list 'quote _0))))
+    '(λ (_0) (list 'quote (list _0 (list 'quote _0))))))
+  (=/= ((_0 closure)) ((_0 list)) ((_0 quote)))
   (sym _0))))
 
 (test-equal? "2-cycle quine relay"
  (run 1 (q) (fresh (p) (laveo p q) (evalo q p)))
-'((((lambda (_0) (list (list _0 (list 'quote _0)) 'etouq))
-    '(lambda (_0) (list (list _0 (list 'quote _0)) 'etouq)))
+'((((λ (_0) (list (list _0 (list 'quote _0)) 'etouq))
+    '(λ (_0) (list (list _0 (list 'quote _0)) 'etouq)))
    (=/= ((_0 closure)) ((_0 list)) ((_0 quote)))
    (sym _0))))
 
@@ -84,8 +84,8 @@
       (absento p s)
       (evalo `(,p ,r) `(,p ,r))
       (evalo `(,s ,r) `(,p ,r))))
-'((((lambda (_0) (list _0 (list 'quote _0)))
-    '(lambda (_1) (list _1 (list 'quote _1))))
+'((((λ (_0) (list _0 (list 'quote _0)))
+    '(λ (_1) (list _1 (list 'quote _1))))
    (=/=
     ((_0 closure))
     ((_0 list))
@@ -94,26 +94,26 @@
     ((_1 list))
     ((_1 quote)))
    (sym _0 _1))
-  ((((lambda (_0) (lambda (_1) (list _1 (list 'quote _1)))) '_2)
-     '(lambda (_3) (list _3 (list 'quote _3))))
+  ((((λ (_0) (λ (_1) (list _1 (list 'quote _1)))) '_2)
+     '(λ (_3) (list _3 (list 'quote _3))))
     (=/=
-     ((_0 lambda))
+     ((_0 λ))
      ((_0 list))
      ((_0 quote))
      ((_1 closure))
      ((_1 list))
      ((_1 quote))
-     ((_2 (lambda (_3) (list _3 (list 'quote _3)))))
+     ((_2 (λ (_3) (list _3 (list 'quote _3)))))
      ((_3 closure))
      ((_3 list))
      ((_3 quote)))
     (sym _0 _1 _3)
-    (absento ('(lambda (_3) (list _3 (list 'quote _3))) _2) (closure _2)))
-  (((lambda (_0)
+    (absento ('(λ (_3) (list _3 (list 'quote _3))) _2) (closure _2)))
+  (((λ (_0)
       (list
-       (list 'lambda '(_1) '(list _1 (list 'quote _1)))
+       (list 'λ '(_1) '(list _1 (list 'quote _1)))
        (list 'quote _0)))
-    '(lambda (_1) (list _1 (list 'quote _1))))
+    '(λ (_1) (list _1 (list 'quote _1))))
    (=/=
     ((_0 closure))
     ((_0 list))
@@ -126,12 +126,12 @@
 (test-equal? "Trivial and non-trivial ``stuttered'' quasi-quine"
   (run 2 (q) (evalo `(,q ,q) q))
 '(quote
-  (((lambda (_0) (lambda (_1) (list _0 (list 'quote _0))))
-    '(lambda (_0) (lambda (_1) (list _0 (list 'quote _0)))))
+  (((λ (_0) (λ (_1) (list _0 (list 'quote _0))))
+    '(λ (_0) (λ (_1) (list _0 (list 'quote _0)))))
    (=/=
     ((_0 _1))
     ((_0 closure))
-    ((_0 lambda))
+    ((_0 λ))
     ((_0 list))
     ((_0 quote))
     ((_1 closure))
@@ -147,28 +147,28 @@
       (evalo `(,a ,b) c)
       (evalo `(,b ,c) a)
       (evalo `(,c ,a) b)))
-'((((lambda (_0)
-      '(lambda (_1)
+'((((λ (_0)
+      '(λ (_1)
          (list
-          'lambda
+          'λ
           '(_2)
           (list
            'quote
-           (list 'lambda '(_0) (list 'quote (_1 '_3)))))))
-    (lambda (_2)
-      '(lambda (_0)
-         '(lambda (_1)
+           (list 'λ '(_0) (list 'quote (_1 '_3)))))))
+    (λ (_2)
+      '(λ (_0)
+         '(λ (_1)
             (list
-             'lambda
+             'λ
              '(_2)
              (list
               'quote
-              (list 'lambda '(_0) (list 'quote (_1 '_3))))))))
-    (lambda (_1)
+              (list 'λ '(_0) (list 'quote (_1 '_3))))))))
+    (λ (_1)
       (list
-       'lambda
+       'λ
        '(_2)
-       (list 'quote (list 'lambda '(_0) (list 'quote (_1 '_3)))))))
+       (list 'quote (list 'λ '(_0) (list 'quote (_1 '_3)))))))
    (=/= ((_0 closure)) ((_0 quote)) ((_1 closure)) ((_1 list)) 
         ((_1 quote)) ((_2 closure)) ((_2 quote))) 
    (sym _0 _1 _2)
