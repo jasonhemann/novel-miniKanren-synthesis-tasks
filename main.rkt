@@ -41,6 +41,12 @@
   (=/= ((_0 closure)) ((_0 list)) ((_0 quote)))
   (sym _0))))
 
+(test-equal? "Mirrored Programs"
+  (run 3 (q) (fresh (a b) (evalo q a) (laveo q b)))
+  '('etouq
+    ((λ (_0) adbmal) (sym _0))
+    ((λ (adbmal) adbmal) (λ (λ) adbmal))))
+
 (test-equal? "2-cycle quine relay"
  (run 1 (q) (fresh (p) (laveo p q) (evalo q p)))
 '((((λ (_0) (list (list _0 (list 'quote _0)) 'etouq))
