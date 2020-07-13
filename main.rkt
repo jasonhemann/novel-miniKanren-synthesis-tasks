@@ -177,6 +177,27 @@
    (sym _0 _1 _2)
    (absento (closure _3)))))
 
+
+(test-equal? "demonstrations of ccnstraints between program components"
+  (run 1 (q)
+    (fresh (s r p)
+      (== q `((,s ,r) => (,p ,r)))
+      (absento p s)
+      (evalo `(,p ,r) `(,p ,r))
+      (evalo `(,s ,r) `(,p ,r))))
+'(((((λ (_0) (list _0 (list 'quote _0))) '(λ (_1) (list _1 (list 'quote _1))))
+    =>
+    ((λ (_1) (list _1 (list 'quote _1))) '(λ (_1) (list _1 (list 'quote _1)))))
+   (=/=
+    ((_0 _1))
+    ((_0 closure))
+    ((_0 list))
+    ((_0 quote))
+    ((_1 closure))
+    ((_1 list))
+    ((_1 quote)))
+   (sym _0 _1))))
+
    (define-relation
      (plop acc whole res data)
      (conde
